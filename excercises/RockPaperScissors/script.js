@@ -1,3 +1,7 @@
+
+let playerScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
     const choices = ["rock", "paper", "scissors"]
     return choices[Math.floor(Math.random()*choices.length)]
@@ -5,38 +9,69 @@ function getComputerChoice() {
 
 function singleGame(playerSelection, computerSelection) {
     if (playerSelection==computerSelection) {
-        return `Draw!`
+        result.textContent = `Draw!`;
     } else if (playerSelection == "rock" && computerSelection == "scissors") {
-        return `You Win! ${playerSelection} beats ${computerSelection}`
+        playerScore += 1;
+       result.textContent = `You Win! ${playerSelection} beats ${computerSelection}`
     } else if (playerSelection == "paper" && computerSelection=="rock") {
-        return `You Win! ${playerSelection} beats ${computerSelection}`
+        playerScore += 1;
+        result.textContent =  `You Win! ${playerSelection} beats ${computerSelection}`
     } else if (playerSelection=="scissors" && computerSelection=="paper") {
-        return `You Win! ${playerSelection} beats ${computerSelection}`
+        playerScore += 1;
+        result.textContent =  `You Win! ${playerSelection} beats ${computerSelection}`
     } else {
-        return `You Lose! ${computerSelection} beats ${playerSelection}`
+        computerScore += 1;
+        result.textContent =  `You Lose! ${computerSelection} beats ${playerSelection}`
+    }
+    Score.textContent = `Player: ${playerScore}   Computer: ${computerScore}`;
+    counter();
+}
+
+function counter() {
+    if (playerScore == 5) {
+        btn1.disabled = true;
+        btn2.disabled = true;
+        btn3.disabled = true;
+        result.textContent = `You Won the game with ${playerScore} against ${computerScore}.`
+    } else if (computerScore == 5) {
+        btn1.disabled = true;
+        btn2.disabled = true;
+        btn3.disabled = true;
+        result.textContent = `You Lost the game with ${computerScore} against ${playerScore}.`
     }
 }
 
-function game() {
-    let games = 0;
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Rock, paper or scissors. Choose: ").toLowerCase()
-        const computerSelection = getComputerChoice()
-        if (singleGame(playerSelection,computerSelection)== `You Win! ${playerSelection} beats ${computerSelection}`){
-            console.log(singleGame(playerSelection,computerSelection))
-            games += 1;
-        } else {
-                console.log(singleGame(playerSelection,computerSelection))
-    }
-    }
-    if (games > 3) {
-        return `You win! With a score of ${games} out of 5 games won.`
-    }
-    else {
-        return `You lose! With a score of ${games} out of 5 games won.`
-    }
+const btn1 = document.createElement('button');
+const btn2 = document.createElement('button');
+const btn3 = document.createElement('button');
+const page = document.querySelector('section');
 
-}
+btn1.textContent='rock';
+btn2.textContent='paper';
+btn3.textContent='scissors';
+
+page.appendChild(btn1);
+page.appendChild(btn2);
+page.appendChild(btn3);
 
 
-console.log(game())
+btn1.addEventListener('click', () => {
+    singleGame('rock', getComputerChoice());
+});
+
+btn2.addEventListener('click', () => {
+    singleGame('paper', getComputerChoice());
+})
+
+btn3.addEventListener('click', ()=> {
+    singleGame('scissors', getComputerChoice());
+})
+
+const result = document.createElement('div');
+page.appendChild(result)
+
+
+const Score =document.createElement('p');
+Score.textContent = `Player: ${playerScore} Computer: ${computerScore}`
+page.appendChild(Score)
+
